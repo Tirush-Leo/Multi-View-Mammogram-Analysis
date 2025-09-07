@@ -122,21 +122,21 @@ After segmentation, ROIs are classified into **BI-RADS categories (2–5)**.
 
 ## 📄 Publications  
 
-1. **Dual-Path Enhancement Framework for Masses and Calcifications in Mammograms: A Quantitative Evaluation of Preprocessing Techniques**  
-   - *Authors:* **S.A.A.J.M. Athukorala, S.M.D. Deepashika, T.D. Wickramasingha, I.A.S.I. Fernando, U.L. Wijewardhana, U.B. Balagalla**  
-   - *Conference:* [Insert Conference Name & Year — already held]  
-   - *Status:* ✅ Accepted & Presented  
-   - *Summary:* Introduced a **dual-path preprocessing pipeline**, achieving major improvements in CNR and SSIM.  
-
-2. **A Unified Deep Learning Approach for the Segmentation of Breast Masses and Calcifications**  
-   - *Authors:* **T.D. Wickramasingha, S.A.A.J.M. Athukorala, S.M.D. Deepashika, I.A.S.I. Fernando, U.L. Wijewardhana, U.B. Balagalla**  
-   - *Conference:* [Insert Conference Name & Year — upcoming]  
-   - *Status:* ✅ Accepted (Presentation Scheduled)  
+1. **A Unified Deep Learning Approach for the Segmentation of Breast Masses and Calcifications**  
+   - *Authors:* **T.D. Wickramasingha**, S.A.A.J.M. Athukorala, S.M.D. Deepashika, I.A.S.I. Fernando, U.L. Wijewardhana, U.B. Balagalla 
+   - *Conference:* [Moratuwa Engineering Research Conference 2025 (MERCon 2025) — already held]  
+   - *Status:* ✅ Accepted & Presented    
    - *Summary:* Proposed **Modified HTU-Net** for masses and **U-Net** for calcifications, showing strong segmentation accuracy.  
 
+2. **Dual-Path Enhancement Framework for Masses and Calcifications in Mammograms: A Quantitative Evaluation of Preprocessing Techniques**  
+   - *Authors:* S.A.A.J.M. Athukorala, S.M.D. Deepashika, **T.D. Wickramasingha**, I.A.S.I. Fernando, U.L. Wijewardhana, U.B. Balagalla 
+   - *Conference:* [IEEE Region 10 Conference 2025 (TENCON 2025) — upcoming]  
+   - *Status:* ✅ Accepted (Presentation Scheduled)
+   - *Summary:* Introduced a **dual-path preprocessing pipeline**, achieving major improvements in CNR and SSIM.  
+
 3. **Unified Multi-View Mammogram Analysis: Segmentation and BI-RADS Categorization of Masses and Calcifications**  
-   - *Authors:* **S.A.A.J.M. Athukorala, S.M.D. Deepashika, T.D. Wickramasingha**  
-   - *Journal:* [Insert Journal Name]  
+   - *Authors:* S.M.D. Deepashika, **T.D. Wickramasingha**, S.A.A.J.M. Athukorala, I.A.S.I. Fernando, U.L. Wijewardhana, U.B. Balagalla 
+   - *Journal:* [IEEE 19th International Conference on Industrial and Information Systems (ICIIS)]  
    - *Status:* ⏳ Under Review  
    - *Summary:* End-to-end pipeline integrating preprocessing, segmentation, and classification, achieving **87.55% accuracy**.  
 
