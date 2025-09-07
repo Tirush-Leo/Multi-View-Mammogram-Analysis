@@ -19,12 +19,13 @@ Pre-processing ensures **image standardization, enhancement, and ROI clarity**, 
 - **Dataset**: INBreast dataset (high-resolution DICOM mammograms with annotations).  
 - **View Handling**: Cranio-Caudal (CC) and Mediolateral Oblique (MLO) views.  
 - **Pectoral Muscle Removal**: Eliminated in MLO views to prevent misdiagnosis.  
-![Pectoral_Muscle_Removal](https://drive.google.com/file/d/1taYXipFDwTgFXXrjTY0pAWjZvnofWfFw/view?usp=sharing)
+![Pectoral muscle removal](https://drive.google.com/uc?export=download&id=1taYXipFDwTgFXXrjTY0pAWjZvnofWfFw)
+
 - **Standardization**:  
   - Cropping breast tissue using largest external contour detection.  
   - Proportional resizing to **1024×1024 pixels**, preserving anatomical integrity.  
   - Zero-intensity padding to avoid distortions.  
-![Standardization](https://drive.google.com/file/d/1dKJihOHzCAYKL6Z4bEg1WF5DExiLHPP6/view?usp=sharing)
+![Standardization](https://drive.google.com/uc?export=download&id=1dKJihOHzCAYKL6Z4bEg1WF5DExiLHPP6)
 
 #### Mass Enhancement Pipeline  
 - Contrast Limited Adaptive Histogram Equalization (**CLAHE**).  
@@ -32,15 +33,15 @@ Pre-processing ensures **image standardization, enhancement, and ROI clarity**, 
 - Magma color mapping.  
 - Channel decomposition & fusion (R-G, R-B, B-G).  
 - **B-G fusion** achieved the best performance (CNR, SSIM, Colorfulness).  
-![Mass_Enhancement_Pipeline ](https://drive.google.com/file/d/1Ui4RYMobHxZdj_AQ6xuHb4VnFye6x_8r/view?usp=sharing)
-![Mass_Enhancement_Pipeline2](https://drive.google.com/file/d/1NaGiep3OB8yQjJQPWyj5nhZEa59q9Siv/view?usp=sharing)
+![Mass_Enhancement_Pipeline ](https://drive.google.com/uc?export=download&id=1Ui4RYMobHxZdj_AQ6xuHb4VnFye6x_8r)
+![Mass_Enhancement_Pipeline2](https://drive.google.com/uc?export=download&id=1NaGiep3OB8yQjJQPWyj5nhZEa59q9Siv)
 
 #### Calcification Enhancement Pipeline  
 - High-pass filtering (Gaussian low-pass subtraction).  
 - Rectification + Gaussian smoothing to improve SNR.  
 - Adaptive thresholding to isolate calcifications.  
 - Overlaying binary mask on mammogram for improved visualization.  
-![Calcification_Enhancement_Pipeline2](https://drive.google.com/file/d/1AJCiQBjBvZPK0UYmExgLvWrVF1qnn6Pf/view?usp=sharing)
+![Calcification_Enhancement_Pipeline2](https://drive.google.com/uc?export=download&id=1AJCiQBjBvZPK0UYmExgLvWrVF1qnn6Pf)
 
 ✅ *Results:* Up to **72% improvement in CNR for masses** and **46% improvement in PSNR for calcifications** compared to conventional methods.  
 
@@ -61,13 +62,13 @@ A **dual-path segmentation framework** was developed to handle differences betwe
 - Multi-Head Attention (MHA) at bottleneck for global dependencies.  
 - Conv2D positional encodings instead of patch embeddings.  
 - **Performance**: DSC = **0.6064**, Precision = **0.5988**.  
-![Mass_Segmentation](https://drive.google.com/file/d/1JP9KiDygrBZh_K8XMwfQedn2QvtW5VBN/view?usp=sharing)
+![Mass_Segmentation](https://drive.google.com/uc?export=download&id=1JP9KiDygrBZh_K8XMwfQedn2QvtW5VBN)
 
 #### Calcification Segmentation (U-Net + Patch-based Method)  
 - 64×64 patches (stride 32), reconstructed with cosine Hanning window merging.  
 - Encoder: 3 convolutional blocks; Bottleneck: 512 filters; Decoder: 3 upsampling blocks.  
 - **Performance**: DSC = **0.8022**, Precision = **0.8958**.  
-![Calcification_Segmentation](https://drive.google.com/file/d/1XD_DSKjU8NEx_ELFjeR7mBMIDZfj1e8M/view?usp=sharing)
+![Calcification_Segmentation](https://drive.google.com/uc?export=download&id=1XD_DSKjU8NEx_ELFjeR7mBMIDZfj1e8M)
 
 #### Post-processing  
 - Thresholding → Binary mask.  
@@ -75,11 +76,11 @@ A **dual-path segmentation framework** was developed to handle differences betwe
 - Largest connected component retained (for masses).  
 - Boundary refinement for calcifications by multiplying masks with normalized pre-processed images.  
 - Final overlay of masses + calcifications.  
-![Post-processing ](https://drive.google.com/file/d/1Kivk1SqOwhUGqNDzDm1yzSSetf-uzBw5/view?usp=sharing)
+![Post-processing ](https://drive.google.com/uc?export=download&id=1Kivk1SqOwhUGqNDzDm1yzSSetf-uzBw5)
 
 #### Results 
-![Results ](https://drive.google.com/file/d/1s9Q9aZhQb3fumTLkX73HsDCgfkLAtETB/view?usp=sharing)
-![Results](https://drive.google.com/file/d/1-tQzg544tnaazj3Z3DlhPfuaO6Ue2UgI/view?usp=sharing)
+![Results ](https://drive.google.com/uc?export=download&id=1s9Q9aZhQb3fumTLkX73HsDCgfkLAtETB)
+![Results](https://drive.google.com/uc?export=download&id=1-tQzg544tnaazj3Z3DlhPfuaO6Ue2UgI)
 ---
 
 ### 3. Classification  
@@ -93,13 +94,13 @@ After segmentation, ROIs are classified into **BI-RADS categories (2–5)**.
   - Global average pooling + feature concatenation across both views.  
   - Dense ANN layers as classifier.  
   - Optimizer: Adam, LR = 0.0005, with 5-fold cross-validation.  
-![Results](https://drive.google.com/file/d/1bcIX3B8klyv_dxS-tybpSNCeSm1uSZf4/view?usp=sharing)
+![Results](https://drive.google.com/uc?export=download&id=1bcIX3B8klyv_dxS-tybpSNCeSm1uSZf4)
 
 #### Class Imbalance Handling  
 - Enhanced **SMOTE with adaptive k-neighbors** to balance BI-RADS categories.  
 
 #### Results  
-![Results](https://drive.google.com/file/d/1yBmW8EfelatJL0zc_93NFeaJcVlShsFN/view?usp=sharing)
+![Results](https://drive.google.com/uc?export=download&id=1yBmW8EfelatJL0zc_93NFeaJcVlShsFN)
 
 ---
 
@@ -146,5 +147,5 @@ After segmentation, ROIs are classified into **BI-RADS categories (2–5)**.
 - 🥇 **Best Final Year Project Award**  
   - Awarded by the **Department of Electrical and Electronic Engineering, University of Sri Jayewardenepura, Sri Lanka**.  
   - Recognized for outstanding innovation, research contribution, and successful integration of deep learning into clinical support systems.  
-![Results](https://drive.google.com/file/d/1O2Jy0oGnJn329sUDWNPAchIqmgBd8ywE/view?usp=sharing)
+![Results](https://drive.google.com/uc?export=download&id=1O2Jy0oGnJn329sUDWNPAchIqmgBd8ywE)
 ---
