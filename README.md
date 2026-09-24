@@ -23,7 +23,7 @@ University of Sri Jayewardenepura, Sri Lanka
 The project was recognized for its research contribution and integration of image processing, deep learning, segmentation, and multi-view classification within a unified mammography-analysis framework.
 
 <p align="center">
-  <img src="assets/best_project_award.png" width="75%" alt="Best Final Year Project Award">
+  <img src="assets/best_project_award.jpg" width="75%" alt="Best Final Year Project Award">
 </p>
 
 ---
@@ -382,9 +382,6 @@ graph LR
 - Learning rate: **0.0005**
 - **5-fold cross-validation**
 
-<p align="center">
-  <img src="assets/classification_architecture.png" width="90%" alt="Multi-view classification architecture">
-</p>
 
 ---
 
@@ -404,6 +401,7 @@ The final multi-view classification pipeline achieved:
 
 <p align="center">
   <img src="assets/classification_results.png" width="90%" alt="Classification results">
+  <img src="assets/classification_results1.png" width="90%" alt="Classification results1">
 </p>
 
 ---
