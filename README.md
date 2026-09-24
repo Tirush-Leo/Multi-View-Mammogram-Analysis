@@ -382,9 +382,6 @@ graph LR
 - Learning rate: **0.0005**
 - **5-fold cross-validation**
 
-<p align="center">
-  <img src="assets/classification_architecture.png" width="90%" alt="Multi-view classification architecture">
-</p>
 
 ---
 
@@ -404,6 +401,7 @@ The final multi-view classification pipeline achieved:
 
 <p align="center">
   <img src="assets/classification_results.png" width="90%" alt="Classification results">
+  <img src="assets/classification_results1.png" width="90%" alt="Classification results1">
 </p>
 
 ---
