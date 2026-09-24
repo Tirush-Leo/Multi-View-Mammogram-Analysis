@@ -1,16 +1,16 @@
 # 🩺 Unified Multi-View Mammogram Analysis
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-Research%20Implementation-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-Deep%20Learning-FF6F00?logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
 [![OpenCV](https://img.shields.io/badge/OpenCV-Computer%20Vision-5C3EE8?logo=opencv&logoColor=white)](https://opencv.org/)
-[![EfficientNetB3](https://img.shields.io/badge/EfficientNetB3-Classification-009688)](https://keras.io/api/applications/efficientnet/)
-[![Research](https://img.shields.io/badge/Research-3%20Publications-6f42c1)](#-publications)
+[![Research](https://img.shields.io/badge/Research-3%20Publications-6f42c1)](#-research-outputs)
 [![Award](https://img.shields.io/badge/Award-Best%20Final%20Year%20Project-gold)](#-recognition)
 
-> **End-to-end deep learning framework for mammogram enhancement, abnormality segmentation, and multi-view BI-RADS classification.**
+> **Research and publication archive for an end-to-end deep learning framework for mammogram enhancement, abnormality segmentation, and multi-view BI-RADS classification.**
 >
-> The system combines specialized image-enhancement pipelines, a dual-path segmentation architecture, and EfficientNetB3-based multi-view feature extraction to analyze breast masses and calcifications from CC and MLO mammograms.
+> The project combines abnormality-specific image enhancement, dual-path segmentation, and multi-view deep learning to analyze breast masses and calcifications from CC and MLO mammograms.
+
 
 ---
 
@@ -30,37 +30,42 @@ The project was recognized for its research contribution and integration of imag
 
 ## 📖 Project Overview
 
-Mammographic analysis requires identifying abnormalities such as **breast masses** and **calcifications**, which differ substantially in size, structure, and visual appearance.
+Mammographic analysis requires identifying abnormalities such as **breast masses** and **calcifications**, which differ considerably in size, structure, distribution, and visual appearance.
 
-A single processing pathway is therefore not ideal for both abnormality types.
+Rather than applying a single processing strategy to both abnormality types, this project developed a multi-stage framework consisting of:
 
-This project develops a multi-stage framework consisting of:
+1. **Mammogram standardization**
+2. **Abnormality-specific image enhancement**
+3. **Dual-path segmentation**
+4. **Post-processing and ROI fusion**
+5. **Multi-view deep feature extraction**
+6. **BI-RADS classification using complementary CC and MLO views**
 
-1. **Image standardization and abnormality-specific enhancement**
-2. **Dual-path segmentation for masses and calcifications**
-3. **Post-processing and ROI fusion**
-4. **Multi-view deep feature extraction**
-5. **BI-RADS classification using CC and MLO information**
+The framework was evaluated using the **INBreast mammography dataset**.
 
-The system was evaluated using the **INBreast** mammography dataset.
-
-> This repository represents an academic research and engineering project and is not intended for clinical diagnosis or treatment decisions.
+> **Research Use Notice:** This project was developed for academic research and engineering evaluation. It is not a medical device and should not be used for independent clinical diagnosis or treatment decisions.
 
 ---
 
 ## 📊 Key Results
 
-| Stage | Method | Result |
+| Stage | Method | Reported Result |
 |---|---|---:|
 | **Multi-View Classification** | EfficientNetB3 + ANN | **87.55% Accuracy** |
 | **Mass Segmentation** | Modified HTU-Net | **0.6064 DSC** |
 | **Mass Segmentation** | Modified HTU-Net | **0.5988 Precision** |
 | **Calcification Segmentation** | U-Net | **0.8022 DSC** |
 | **Calcification Segmentation** | U-Net | **0.8958 Precision** |
-| **Mass Enhancement** | Proposed B-G Fusion Pipeline | **Up to 72% CNR Improvement** |
-| **Calcification Enhancement** | Proposed Gaussian-Based Pipeline | **Up to 46% PSNR Improvement** |
+| **Mass Enhancement** | B-G Fusion | **4.10 ± 0.74 CNR** |
+| **Calcification Enhancement** | Proposed Gaussian-Based Method | **43.66 ± 1.60 PSNR** |
 
-> Enhancement improvements correspond to the comparison settings used in the associated preprocessing study and should be interpreted relative to those evaluated baseline methods.
+### Enhancement Highlights
+
+- The proposed **B-G fusion** method achieved a mean CNR of **4.10**, compared with **2.38** for CLAHE — approximately a **72% increase in CNR**.
+- The proposed calcification-enhancement method achieved a mean PSNR of **43.66**, compared with **29.90** for CLAHE — approximately a **46% increase in PSNR**.
+
+> Enhancement percentages are relative improvements calculated from the corresponding mean metric values. Classification, segmentation, and enhancement metrics describe different stages of the pipeline and should not be directly compared with one another.
+
 
 ---
 
@@ -100,33 +105,19 @@ graph LR
 
 # 🧩 Methodology
 
-## 1. Image Preprocessing
+## 1. Mammogram Standardization
 
-The preprocessing stage standardizes mammograms while preserving anatomical structure before enhancement and downstream model inference.
+The preprocessing stage converts mammograms into a consistent representation while preserving anatomical structure.
 
-### Dataset
+The workflow includes:
 
-The framework was evaluated using the **INBreast dataset**, which contains high-resolution mammograms in DICOM format together with abnormality annotations.
-
-The dataset includes:
-
-- **Cranio-Caudal (CC)** views
-- **Mediolateral Oblique (MLO)** views
-- Mass annotations
-- Calcification annotations
-
-### Standardization
-
-The preprocessing pipeline includes:
-
-- DICOM-to-image conversion
-- Breast-region extraction using largest-contour detection
+- DICOM image handling
+- CC and MLO mammogram processing
+- Breast-region extraction using contour detection
 - Pectoral-region handling for MLO images
 - Aspect-ratio-preserving resizing
 - Standardization to **1024 × 1024 pixels**
 - Laterality-aware zero-intensity padding
-
-These operations standardize the dataset while minimizing geometric distortion.
 
 <p align="center">
   <img src="assets/pectoral_muscle_removal.png" width="70%" alt="Pectoral region processing">
@@ -144,20 +135,20 @@ Masses and calcifications have substantially different visual characteristics.
 
 The framework therefore uses separate enhancement pipelines optimized for each abnormality type.
 
-### Mass Enhancement
+## 2.1 Mass Enhancement
 
-The mass-enhancement pipeline applies:
+The breast-mass enhancement workflow applies:
 
 1. **Contrast Limited Adaptive Histogram Equalization (CLAHE)**
 2. Global intensity thresholding
 3. **Magma colour mapping**
 4. RGB channel decomposition
 5. Pairwise channel fusion:
-   - R-G
-   - R-B
-   - B-G
+   - R-G Fusion
+   - R-B Fusion
+   - B-G Fusion
 
-The **B-G fused representation** produced the most balanced enhancement performance across the evaluated image-quality metrics and was selected for downstream mass segmentation.
+The proposed **B-G Fusion** produced the strongest overall results across the evaluated enhancement and similarity metrics.
 
 <p align="center">
   <img src="assets/mass_enhancement_pipeline.png" width="90%" alt="Mass enhancement pipeline">
@@ -166,6 +157,42 @@ The **B-G fused representation** produced the most balanced enhancement performa
 <p align="center">
   <img src="assets/channel_fusion.png" width="90%" alt="Mammogram channel-fusion comparison">
 </p>
+
+### Quantitative Mass-Enhancement Results
+
+| Method | CNR | SBR | Local Contrast | SSIM Local | SSIM Global | Entropy | Colorfulness |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| CLAHE | 2.38 ± 0.57 | 4.30 ± 1.21 | 30.47 ± 13.62 | 0.46 ± 0.13 | 0.25 ± 0.03 | 3.18 ± 0.66 | — |
+| HRAT | 2.44 ± 0.75 | 4.30 ± 1.43 | 39.69 ± 14.22 | 0.30 ± 0.08 | 0.51 ± 0.06 | 2.40 ± 0.45 | — |
+| Magma Colour Map | 1.99 ± 0.53 | 4.12 ± 1.49 | 14.95 ± 12.42 | 0.39 ± 0.04 | 0.69 ± 0.01 | 2.97 ± 0.59 | 72.03 ± 7.75 |
+| R-G Fusion | 2.74 ± 0.72 | 5.56 ± 1.92 | 42.83 ± 16.77 | 0.52 ± 0.09 | 0.53 ± 0.07 | 3.22 ± 0.66 | 70.30 ± 8.32 |
+| R-B Fusion | 2.04 ± 0.52 | 3.76 ± 1.14 | 24.99 ± 10.87 | 0.37 ± 0.06 | 0.51 ± 0.06 | 2.65 ± 0.51 | 98.42 ± 11.40 |
+| **B-G Fusion (Proposed)** | **4.10 ± 0.74** | **5.93 ± 2.11** | **46.58 ± 17.96** | **0.91 ± 0.06** | **0.97 ± 0.08** | **3.63 ± 0.72** | **102.08 ± 12.49** |
+
+<!-- <p align="center">
+  <img src="assets/mass_enhancement_results.png" width="95%" alt="Quantitative mass enhancement results">
+</p> -->
+
+### Key Observation
+
+The proposed **B-G Fusion** achieved the highest reported values across the main evaluated metrics:
+
+- **CNR:** 4.10 ± 0.74
+- **SBR:** 5.93 ± 2.11
+- **Local Contrast:** 46.58 ± 17.96
+- **SSIM Local:** 0.91 ± 0.06
+- **SSIM Global:** 0.97 ± 0.08
+- **Entropy:** 3.63 ± 0.72
+- **Colorfulness:** 102.08 ± 12.49
+
+Using CLAHE as the comparison baseline for CNR:
+
+```text
+(4.10 - 2.38) / 2.38 × 100 ≈ 72.3%
+```
+
+Therefore, the proposed B-G Fusion produced approximately a **72% higher mean CNR than CLAHE** under the reported experimental conditions.
+
 
 ### Calcification Enhancement
 
@@ -185,14 +212,38 @@ The calcification pipeline applies:
   <img src="assets/calcification_enhancement.png" width="85%" alt="Calcification enhancement pipeline">
 </p>
 
-### Enhancement Results
+### Quantitative Calcification-Enhancement Results
 
-The proposed enhancement approaches produced:
+| Method | CNR | SBR | Local Contrast | PSNR | SSIM Global | SSIM Local |
+|---|---:|---:|---:|---:|---:|---:|
+| CLAHE | 2.28 ± 0.62 | 4.06 ± 1.14 | 9.14 ± 27.69 | 29.90 ± 0.28 | 0.25 ± 0.03 | 0.48 ± 0.09 |
+| Gaussian Filter | 1.71 ± 0.48 | 2.44 ± 1.13 | 1.04 ± 4.47 | 32.92 ± 1.36 | 0.82 ± 0.02 | 0.71 ± 0.12 |
+| Laplacian Filter | 0.99 ± 0.57 | 2.40 ± 0.84 | 1.00 ± 0.06 | 28.07 ± 0.09 | 0.03 ± 0.01 | -0.04 ± 0.02 |
+| **Proposed Method** | **2.30 ± 0.82** | **4.41 ± 1.60** | **1.06 ± 0.62** | **43.66 ± 1.60** | **0.96 ± 0.01** | **0.88 ± 0.09** |
 
-- **Up to 72% improvement in CNR** for breast-mass enhancement
-- **Up to 46% improvement in PSNR** for calcification enhancement
+<!-- <p align="center">
+  <img src="assets/calcification_enhancement_results.png" width="95%" alt="Quantitative calcification enhancement results">
+</p> -->
 
-against the evaluated conventional enhancement baselines.
+### Key Observation
+
+The proposed calcification-enhancement method achieved:
+
+- **CNR:** 2.30 ± 0.82
+- **SBR:** 4.41 ± 1.60
+- **PSNR:** 43.66 ± 1.60
+- **SSIM Global:** 0.96 ± 0.01
+- **SSIM Local:** 0.88 ± 0.09
+
+Using CLAHE as the comparison baseline for PSNR:
+
+```text
+(43.66 - 29.90) / 29.90 × 100 ≈ 46.0%
+```
+
+The proposed method therefore achieved approximately a **46% higher mean PSNR than CLAHE** under the reported experimental conditions.
+
+> Individual enhancement metrics characterize different properties of image quality. The proposed method should therefore be interpreted using the complete metric set rather than a single metric in isolation.
 
 ---
 
@@ -374,10 +425,11 @@ graph LR
 ### Training Configuration
 
 - ImageNet-pretrained EfficientNetB3
-- Fine-tuning on mammographic data
+- Deep feature extraction
 - Global average pooling
+- Feature extraction from complementary mammographic views
 - Multi-view feature concatenation
-- Dense ANN classifier
+- Dense ANN classification
 - Adam optimizer
 - Learning rate: **0.0005**
 - **5-fold cross-validation**
@@ -406,23 +458,27 @@ The final multi-view classification pipeline achieved:
 
 ---
 
-# 🔬 Key Contributions
+# 🔬 Research Contributions
 
-The project contributes a unified framework spanning multiple stages of mammogram analysis:
+The project investigated a unified mammography-analysis framework spanning multiple stages of the AI pipeline:
 
-1. **Abnormality-specific enhancement pipelines** for masses and calcifications
-2. **Dual-path deep learning segmentation** using modified HTU-Net and U-Net
-3. **Hanning-window weighted reconstruction** for patch-based calcification segmentation
-4. **Multi-view deep feature extraction** using EfficientNetB3
-5. **Feature-level fusion of CC and MLO mammographic information**
-6. **ANN-based BI-RADS classification**
-7. Quantitative evaluation across enhancement, segmentation, and classification stages
+1. **Abnormality-specific enhancement** for breast masses and calcifications
+2. **Quantitative preprocessing evaluation** using CNR, SBR, Local Contrast, SSIM, PSNR, Entropy, and Colorfulness
+3. **Modified HTU-Net segmentation** for breast masses
+4. **Patch-based U-Net segmentation** for calcifications
+5. **Hanning-window weighted reconstruction** of calcification predictions
+6. **Post-processing and segmentation-output fusion**
+7. **EfficientNetB3-based deep feature extraction**
+8. **Multi-view CC/MLO feature fusion**
+9. **ANN-based BI-RADS classification**
+10. Quantitative evaluation across enhancement, segmentation, and classification stages
 
-Rather than using a single model for all tasks, the framework applies specialized processing and learning strategies based on the structural characteristics of each abnormality and stage of analysis.
+The work resulted in three research publications covering complementary components of the complete framework.
+
 
 ---
 
-# 📄 Publications
+# 📚 Research Outputs
 
 This project contributed to three research publications covering preprocessing, segmentation, and classification.
 
@@ -456,22 +512,39 @@ This project contributed to three research publications covering preprocessing, 
 
 ---
 
-# 🏆 Recognition
+# 💻 Code Availability
 
-### Best Final Year Project
+This repository primarily serves as a **research and publication archive** for the Unified Multi-View Mammogram Analysis project.
 
-**Unified Multi-View Mammogram Analysis**
+The original system was developed iteratively through multiple experimental **Google Colab** workflows during the research period.
 
-Department of Electrical and Electronic Engineering  
-University of Sri Jayewardenepura, Sri Lanka
+The surviving development notebooks represent intermediate experimental versions and do **not fully reproduce the final methodology** reported in the associated research publications.
 
-The project received the department's **Best Final Year Project** recognition.
+Some surviving notebooks contain earlier model architectures, image resolutions, patch configurations, reconstruction strategies, and experimental training settings that differ from the final published methodology.
+
+To avoid presenting incomplete or potentially misleading implementation code as the final research system, these experimental notebooks are **not published here as the project's reference implementation**.
+
+This repository therefore focuses on the parts of the project that can be reliably documented and verified:
+
+- system architecture
+- methodology
+- experimental configurations
+- quantitative results
+- figures and visual outputs
+- research publications
+- project recognition
+
+The associated papers provide detailed descriptions of the preprocessing, segmentation, reconstruction, classification, and evaluation methodologies used in the reported studies.
+
+> If a reconstructed reference implementation is added in the future, it will be clearly identified as a **reimplementation based on the published methodology**, rather than the original experimental source code used to generate the reported results.
 
 ---
+
 
 # 🧰 Technology Stack
 
 ### Deep Learning
+
 - PyTorch
 - TensorFlow
 - EfficientNetB3
@@ -480,6 +553,7 @@ The project received the department's **Best Final Year Project** recognition.
 - Artificial Neural Networks
 
 ### Computer Vision & Image Processing
+
 - OpenCV
 - CLAHE
 - Gaussian filtering
@@ -488,28 +562,36 @@ The project received the department's **Best Final Year Project** recognition.
 - Hanning-window patch reconstruction
 
 ### Evaluation
+
 - Dice Similarity Coefficient
 - Precision
-- CNR
-- SBR
-- SSIM
-- PSNR
+- Contrast-to-Noise Ratio (CNR)
+- Signal-to-Background Ratio (SBR)
+- Local Contrast
+- Structural Similarity Index (SSIM)
+- Peak Signal-to-Noise Ratio (PSNR)
+- Entropy
+- Colorfulness
 - Cross-validation
 
-### Programming
+### Programming & Machine Learning
+
 - Python
 - NumPy
 - Scikit-learn
+
 
 ---
 
 # ⚠️ Research Use Disclaimer
 
-This project was developed for **academic research and engineering evaluation**.
+This repository documents an **academic research project**.
 
-It is **not a medical device** and should not be used independently for clinical diagnosis, screening, treatment, or patient-management decisions.
+The proposed methods were evaluated under the datasets, preprocessing procedures, experimental configurations, and validation settings described in the associated research work.
 
-The reported results were obtained under the dataset, preprocessing, experimental, and validation conditions used during this research.
+The system is **not a medical device** and is not intended for independent clinical diagnosis, screening, treatment, or patient-management decisions.
+
+Further external validation would be required before considering real-world clinical application.
 
 ---
 
@@ -517,23 +599,24 @@ The reported results were obtained under the dataset, preprocessing, experimenta
 
 Potential extensions include:
 
-- Validation on additional multi-institutional mammography datasets
+- Validation using additional multi-institutional mammography datasets
 - External validation across different imaging systems and populations
-- Explainability methods such as **Grad-CAM**
 - Improved uncertainty estimation
-- Further optimization of multi-view feature fusion
-- Expanded malignancy-related classification tasks
-- Evaluation of deployment-oriented inference pipelines
+- Explainability techniques such as **Grad-CAM**
+- More advanced multi-view feature-fusion strategies
+- Expanded malignancy-related classification
+- Investigation of newer vision and transformer architectures
+- Development of a clean reconstructed reference implementation based on the published methodology
 
 ---
 
 # 🤝 Acknowledgements
 
-- **INBreast** — Mammography dataset used for model development and evaluation
-- **PyTorch** — Deep learning framework used across model development
-- **TensorFlow / Keras** — Model development and EfficientNet-based experimentation
-- **OpenCV** — Image preprocessing and computer-vision operations
+- **INBreast** — Mammography dataset used for research and evaluation
 - **University of Sri Jayewardenepura** — Academic supervision and project support
+- **PyTorch** — Deep learning experimentation
+- **TensorFlow / Keras** — Deep learning and classification experimentation
+- **OpenCV** — Image-processing and computer-vision operations
 
 ---
 
